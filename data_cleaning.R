@@ -1,5 +1,7 @@
 # Load necessary libraries
 library(readr)
+library(dplyr)
+library(lubridate)
 
 # Load the dataset
 spotify_data <- read_csv("Spotify Most Streamed Songs.csv")
@@ -45,3 +47,56 @@ spotify_data$key[is.na(spotify_data$key)] <- "Unknown"
 # Save cleaned Spotify data
 write_csv(spotify_data, "DataCleanAndFormatted/Spotify_Cleaned.csv")
 saveRDS(spotify_data, "DataCleanAndFormatted/Spotify_Cleaned.RDS")
+
+
+
+# Load the Hot100 dataset
+hot100_data <- read_csv("hot100.csv")
+
+# Convert the 'Date' column to a Date format
+hot100_data$Date <- as.Date(hot100_data$Date, format = "%m/%d/%Y")
+
+# Filter the dataset to only include dates from 2023
+hot100_data_2023 <- hot100_data %>% 
+  filter(format(Date, "%Y") == "2023")
+
+# Check the result
+head(hot100_data_2023)
+
+
+# Check for duplicates in the Hot 100 data
+duplicates_hot100 <- hot100_data_2023[duplicated(hot100_data_2023), ]
+
+# Print the number of duplicate rows
+cat("Number of duplicate rows:", nrow(duplicates_hot100), "\n")
+
+# View the actual duplicate rows, if any
+head(duplicates_hot100)
+
+#no duplicates
+
+#remove unneeded columns
+hot100_data_2023 <- subset(hot100_data_2023, select = -c(`Image URL`, `Last Week`))
+
+# Check for missing values in the Hot 100 data
+missing_values_hot100 <- sapply(hot100_data_2023, function(x) sum(is.na(x)))
+print(missing_values_hot100)
+
+#no missing values
+
+
+# Add a 'Week' column based on the week of the year from the 'Date' column
+hot100_data_2023$Week <- isoweek(hot100_data_2023$Date)
+
+# Check the result
+head(hot100_data_2023)
+
+
+
+
+# Save the filtered data for later use
+write_csv(hot100_data_2023, "DataCleanAndFormatted/Hot100_2023.csv")
+saveRDS(hot100_data_2023, "DataCleanAndFormatted/Hot100_2023.RDS")
+
+
+
