@@ -12,5 +12,5 @@ This repository contains code to clean and format two datasets:
 1. Run the `data_cleaning.R` script to clean the data and generate the output files.
 2. The cleaned data will be saved as:
    - `Spotify_Cleaned.csv` and `Spotify_Cleaned.RDS` for the Spotify dataset.
-   - `Hot100_2023_Cleaned.csv` and `Hot100_2023_Cleaned.RDS` for the Hot 100 dataset.
+   - `Hot100_2023.csv` and `Hot100_2023.RDS` for the Hot 100 dataset.
 
