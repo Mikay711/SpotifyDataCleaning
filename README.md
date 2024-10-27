@@ -8,7 +8,7 @@ This repository contains code to clean and format two datasets:
 - `data_cleaning.Rmd`: RMarkdown file used to generate the HTML version of the cleaning script.
 - `data_cleaning.html`: HTML version of the R script, showing all the code and outputs in an easy-to-read format.
 - `data_cleaning.R`: R script to clean and format both datasets.
-- `DataCleanAndFormatted/`: Folder containing the cleaned and formatted versions of the Spotify and Hot 100 datasets.
+- `DataCleanAndFormatted`: Folder containing the cleaned and formatted versions of the Spotify and Hot 100 datasets.
 
 ## How to Use
 1. You can view the data cleaning process by opening `data_cleaning.html` to see the code and outputs in HTML format.
