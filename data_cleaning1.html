@@ -11,9 +11,9 @@
 
 <meta name="author" content="Michaela Bowen" />
 
-<meta name="date" content="2024-10-27" />
+<meta name="date" content="2024-10-28" />
 
-<title>data_cleaning</title>
+<title>Deliverable 2</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -350,113 +350,171 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">data_cleaning</h1>
+<h1 class="title toc-ignore">Deliverable 2</h1>
 <h4 class="author">Michaela Bowen</h4>
-<h4 class="date">2024-10-27</h4>
+<h4 class="date">2024-10-28</h4>
 
 </div>
 
 
-<div id="load-necessary-libraries" class="section level1">
-<h1>Load necessary libraries</h1>
-<p>library(readr) library(dplyr) library(lubridate)</p>
-</div>
-<div id="load-the-dataset" class="section level1">
-<h1>Load the dataset</h1>
-<p>spotify_data &lt;- read_csv(“Spotify Most Streamed Songs.csv”)</p>
-</div>
-<div id="check-for-duplicates" class="section level1">
-<h1>Check for duplicates</h1>
-<p>duplicates &lt;- spotify_data[duplicated(spotify_data), ]</p>
-</div>
-<div id="print-the-number-of-duplicate-rows" class="section level1">
-<h1>Print the number of duplicate rows</h1>
-<p>cat(“Number of duplicate rows:”, nrow(duplicates), “”)</p>
-</div>
-<div id="view-the-actual-duplicate-rows-if-any" class="section level1">
-<h1>View the actual duplicate rows, if any</h1>
-<p>head(duplicates)</p>
-<p>#no duplicates</p>
-</div>
-<div id="combine-date-columns-into-one" class="section level1">
-<h1>Combine date columns into one</h1>
-<p>spotify_data$release_date &lt;- as.Date(with(spotify_data,
-paste(released_year, released_month, released_day, sep = “-”)),
-“%Y-%m-%d”)</p>
-</div>
-<div id="drop-unwanted-columns" class="section level1">
-<h1>Drop unwanted columns</h1>
-<p>spotify_data &lt;- subset(spotify_data, select = -c( artist_count,
-in_apple_playlists, in_apple_charts, in_deezer_playlists,
-in_deezer_charts, in_shazam_charts, released_year, released_month,
-released_day ))</p>
-<p>#Identify missing values missing_values &lt;- sapply(spotify_data,
-function(x) sum(is.na(x))) print(missing_values)</p>
-<p>#Replace missing values in the ‘key’ column with “Unknown”
-spotify_data<span class="math inline">\(key[is.na(spotify_data\)</span>key)] &lt;-
-“Unknown”</p>
-</div>
-<div id="save-cleaned-spotify-data" class="section level1">
-<h1>Save cleaned Spotify data</h1>
-<p>write_csv(spotify_data, “DataCleanAndFormatted/Spotify_Cleaned.csv”)
-saveRDS(spotify_data, “DataCleanAndFormatted/Spotify_Cleaned.RDS”)</p>
-</div>
-<div id="load-the-hot100-dataset" class="section level1">
-<h1>Load the Hot100 dataset</h1>
-<p>hot100_data &lt;- read_csv(“hot100.csv”)</p>
-</div>
-<div id="convert-the-date-column-to-a-date-format" class="section level1">
-<h1>Convert the ‘Date’ column to a Date format</h1>
-<p>hot100_data<span class="math inline">\(Date &lt;-
-as.Date(hot100_data\)</span>Date, format = “%m/%d/%Y”)</p>
-</div>
-<div id="filter-the-dataset-to-only-include-dates-from-2023" class="section level1">
-<h1>Filter the dataset to only include dates from 2023</h1>
-<p>hot100_data_2023 &lt;- hot100_data %&gt;% filter(format(Date, “%Y”)
-== “2023”)</p>
-</div>
-<div id="check-the-result" class="section level1">
-<h1>Check the result</h1>
-<p>head(hot100_data_2023)</p>
-</div>
-<div id="check-for-duplicates-in-the-hot-100-data" class="section level1">
-<h1>Check for duplicates in the Hot 100 data</h1>
-<p>duplicates_hot100 &lt;-
-hot100_data_2023[duplicated(hot100_data_2023), ]</p>
-</div>
-<div id="print-the-number-of-duplicate-rows-1" class="section level1">
-<h1>Print the number of duplicate rows</h1>
-<p>cat(“Number of duplicate rows:”, nrow(duplicates_hot100), “”)</p>
-</div>
-<div id="view-the-actual-duplicate-rows-if-any-1" class="section level1">
-<h1>View the actual duplicate rows, if any</h1>
-<p>head(duplicates_hot100)</p>
-<p>#no duplicates</p>
-<p>#remove unneeded columns hot100_data_2023 &lt;-
-subset(hot100_data_2023, select = -c(<code>Image URL</code>,
-<code>Last Week</code>))</p>
-</div>
-<div id="check-for-missing-values-in-the-hot-100-data" class="section level1">
-<h1>Check for missing values in the Hot 100 data</h1>
-<p>missing_values_hot100 &lt;- sapply(hot100_data_2023, function(x)
-sum(is.na(x))) print(missing_values_hot100)</p>
-<p>#no missing values</p>
-</div>
-<div id="add-a-week-column-based-on-the-week-of-the-year-from-the-date-column" class="section level1">
-<h1>Add a ‘Week’ column based on the week of the year from the ‘Date’
-column</h1>
-<p>hot100_data_2023<span class="math inline">\(Week &lt;-
-isoweek(hot100_data_2023\)</span>Date)</p>
-</div>
-<div id="check-the-result-1" class="section level1">
-<h1>Check the result</h1>
-<p>head(hot100_data_2023)</p>
-</div>
-<div id="save-the-filtered-data-for-later-use" class="section level1">
-<h1>Save the filtered data for later use</h1>
-<p>write_csv(hot100_data_2023, “DataCleanAndFormatted/Hot100_2023.csv”)
-saveRDS(hot100_data_2023, “DataCleanAndFormatted/Hot100_2023.RDS”)</p>
-</div>
+<pre class="r"><code># Load necessary libraries
+library(readr)</code></pre>
+<pre><code>## Warning: package &#39;readr&#39; was built under R version 4.2.3</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 4.2.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>library(lubridate)</code></pre>
+<pre><code>## Warning: package &#39;lubridate&#39; was built under R version 4.2.2</code></pre>
+<pre><code>## Loading required package: timechange</code></pre>
+<pre><code>## Warning: package &#39;timechange&#39; was built under R version 4.2.2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     date, intersect, setdiff, union</code></pre>
+<pre class="r"><code># Read Spotify data directly from GitHub
+spotify_data &lt;- read_csv(&quot;https://github.com/Mikay711/SpotifyDataCleaning/raw/main/Spotify%20Most%20Streamed%20Songs.csv&quot;)</code></pre>
+<pre><code>## Rows: 953 Columns: 25</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (6): track_name, artist(s)_name, streams, key, mode, cover_url
+## dbl (17): artist_count, released_year, released_month, released_day, in_spot...
+## num  (2): in_deezer_playlists, in_shazam_charts
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code># Check for duplicates
+duplicates &lt;- spotify_data[duplicated(spotify_data), ]
+
+# Print the number of duplicate rows
+cat(&quot;Number of duplicate rows:&quot;, nrow(duplicates), &quot;\n&quot;)</code></pre>
+<pre><code>## Number of duplicate rows: 0</code></pre>
+<pre class="r"><code># View the actual duplicate rows, if any
+head(duplicates)</code></pre>
+<pre><code>## # A tibble: 0 × 25
+## # ℹ 25 variables: track_name &lt;chr&gt;, artist(s)_name &lt;chr&gt;, artist_count &lt;dbl&gt;,
+## #   released_year &lt;dbl&gt;, released_month &lt;dbl&gt;, released_day &lt;dbl&gt;,
+## #   in_spotify_playlists &lt;dbl&gt;, in_spotify_charts &lt;dbl&gt;, streams &lt;chr&gt;,
+## #   in_apple_playlists &lt;dbl&gt;, in_apple_charts &lt;dbl&gt;, in_deezer_playlists &lt;dbl&gt;,
+## #   in_deezer_charts &lt;dbl&gt;, in_shazam_charts &lt;dbl&gt;, bpm &lt;dbl&gt;, key &lt;chr&gt;,
+## #   mode &lt;chr&gt;, danceability_% &lt;dbl&gt;, valence_% &lt;dbl&gt;, energy_% &lt;dbl&gt;,
+## #   acousticness_% &lt;dbl&gt;, instrumentalness_% &lt;dbl&gt;, liveness_% &lt;dbl&gt;, …</code></pre>
+<pre class="r"><code>#no duplicates</code></pre>
+<pre class="r"><code># Combine date columns into one
+spotify_data$release_date &lt;- as.Date(with(spotify_data, paste(released_year, released_month, released_day, sep = &quot;-&quot;)), &quot;%Y-%m-%d&quot;)</code></pre>
+<pre class="r"><code># Drop unwanted columns
+spotify_data &lt;- subset(spotify_data, select = -c(
+  artist_count, 
+  in_apple_playlists, 
+  in_apple_charts, 
+  in_deezer_playlists, 
+  in_deezer_charts, 
+  in_shazam_charts,
+  released_year,
+  released_month,
+  released_day
+))
+
+
+#Identify missing values
+missing_values &lt;- sapply(spotify_data, function(x) sum(is.na(x)))
+print(missing_values)</code></pre>
+<pre><code>##           track_name       artist(s)_name in_spotify_playlists 
+##                    0                    0                    0 
+##    in_spotify_charts              streams                  bpm 
+##                    0                    0                    0 
+##                  key                 mode       danceability_% 
+##                   95                    0                    0 
+##            valence_%             energy_%       acousticness_% 
+##                    0                    0                    0 
+##   instrumentalness_%           liveness_%        speechiness_% 
+##                    0                    0                    0 
+##            cover_url         release_date 
+##                    0                    0</code></pre>
+<pre class="r"><code>#Replace missing values in the &#39;key&#39; column with &quot;Unknown&quot;
+spotify_data$key[is.na(spotify_data$key)] &lt;- &quot;Unknown&quot;</code></pre>
+<pre class="r"><code># Save cleaned Spotify data
+write_csv(spotify_data, &quot;DataCleanAndFormatted/Spotify_Cleaned.csv&quot;)
+saveRDS(spotify_data, &quot;DataCleanAndFormatted/Spotify_Cleaned.RDS&quot;)</code></pre>
+<pre class="r"><code># Read Hot 100 data directly from GitHub
+hot100_data &lt;- read_csv(&quot;https://github.com/Mikay711/SpotifyDataCleaning/raw/main/hot100.csv&quot;)</code></pre>
+<pre><code>## Rows: 345287 Columns: 8
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (5): Date, Song, Artist, Weeks in Charts, Image URL
+## dbl (3): Rank, Last Week, Peak Position
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code># Convert the &#39;Date&#39; column to a Date format
+hot100_data$Date &lt;- as.Date(hot100_data$Date, format = &quot;%m/%d/%Y&quot;)
+
+# Filter the dataset to only include dates from 2023
+hot100_data_2023 &lt;- hot100_data %&gt;% 
+  filter(format(Date, &quot;%Y&quot;) == &quot;2023&quot;)
+
+# Add a &#39;Week&#39; column based on the week of the year from the &#39;Date&#39; column
+hot100_data_2023$Week &lt;- isoweek(hot100_data_2023$Date)
+
+# Check the result
+head(hot100_data_2023)</code></pre>
+<pre><code>## # A tibble: 6 × 9
+##   Date       Song     Artist  Rank `Last Week` `Peak Position` `Weeks in Charts`
+##   &lt;date&gt;     &lt;chr&gt;    &lt;chr&gt;  &lt;dbl&gt;       &lt;dbl&gt;           &lt;dbl&gt; &lt;chr&gt;            
+## 1 2023-01-04 All I W… Maria…     1           1               1 58               
+## 2 2023-01-04 Rockin&#39;… Brend…     2           2               2 52               
+## 3 2023-01-04 Jingle … Bobby…     3           3               3 49               
+## 4 2023-01-04 Last Ch… Wham!      4           5               4 31               
+## 5 2023-01-04 A Holly… Burl …     5           4               4 32               
+## 6 2023-01-04 It&#39;s Th… Andy …     6           6               5 33               
+## # ℹ 2 more variables: `Image URL` &lt;chr&gt;, Week &lt;dbl&gt;</code></pre>
+<pre class="r"><code># Check for duplicates in the Hot 100 data
+duplicates_hot100 &lt;- hot100_data_2023[duplicated(hot100_data_2023), ]
+
+# Print the number of duplicate rows
+cat(&quot;Number of duplicate rows:&quot;, nrow(duplicates_hot100), &quot;\n&quot;)</code></pre>
+<pre><code>## Number of duplicate rows: 0</code></pre>
+<pre class="r"><code># View the actual duplicate rows, if any
+head(duplicates_hot100)</code></pre>
+<pre><code>## # A tibble: 0 × 9
+## # ℹ 9 variables: Date &lt;date&gt;, Song &lt;chr&gt;, Artist &lt;chr&gt;, Rank &lt;dbl&gt;,
+## #   Last Week &lt;dbl&gt;, Peak Position &lt;dbl&gt;, Weeks in Charts &lt;chr&gt;,
+## #   Image URL &lt;chr&gt;, Week &lt;dbl&gt;</code></pre>
+<pre class="r"><code>#no duplicates
+
+#remove unneeded columns
+hot100_data_2023 &lt;- subset(hot100_data_2023, select = -c(`Image URL`, `Last Week`))
+
+# Check for missing values in the Hot 100 data
+missing_values_hot100 &lt;- sapply(hot100_data_2023, function(x) sum(is.na(x)))
+print(missing_values_hot100)</code></pre>
+<pre><code>##            Date            Song          Artist            Rank   Peak Position 
+##               0               0               0               0               0 
+## Weeks in Charts            Week 
+##               0               0</code></pre>
+<pre class="r"><code>#no missing values
+
+# Check the result
+head(hot100_data_2023)</code></pre>
+<pre><code>## # A tibble: 6 × 7
+##   Date       Song           Artist  Rank `Peak Position` `Weeks in Charts`  Week
+##   &lt;date&gt;     &lt;chr&gt;          &lt;chr&gt;  &lt;dbl&gt;           &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt;
+## 1 2023-01-04 All I Want Fo… Maria…     1               1 58                    1
+## 2 2023-01-04 Rockin&#39; Aroun… Brend…     2               2 52                    1
+## 3 2023-01-04 Jingle Bell R… Bobby…     3               3 49                    1
+## 4 2023-01-04 Last Christmas Wham!      4               4 31                    1
+## 5 2023-01-04 A Holly Jolly… Burl …     5               4 32                    1
+## 6 2023-01-04 It&#39;s The Most… Andy …     6               5 33                    1</code></pre>
+<pre class="r"><code># Save the filtered data for later use
+write_csv(hot100_data_2023, &quot;DataCleanAndFormatted/Hot100_2023.csv&quot;)
+saveRDS(hot100_data_2023, &quot;DataCleanAndFormatted/Hot100_2023.RDS&quot;)</code></pre>
 
 
 
