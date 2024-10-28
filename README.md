@@ -1,4 +1,4 @@
-# SpotifyDataCleaning
+# Deliverable 2: SpotifyDataCleaning
 
 This repository contains code to clean and format two datasets:
 - Spotify Most Streamed Songs dataset
@@ -9,10 +9,6 @@ This repository contains code to clean and format two datasets:
 - `data_cleaning.html`: [View the HTML version of the cleaning code as a webpage](https://mikay711.github.io/SpotifyDataCleaning/data_cleaning1.html).
 - `data_cleaning.R`: R script to clean and format both datasets.
 - `DataCleanAndFormatted/`: Folder containing the cleaned and formatted versions of the Spotify and Hot 100 datasets.
-
-## Data Sources
-- [Spotify Most Streamed Songs Dataset](https://github.com/Mikay711/SpotifyDataCleaning/raw/main/Spotify%20Most%20Streamed%20Songs.csv)
-- [Hot 100 Songs Dataset for 2023](https://github.com/Mikay711/SpotifyDataCleaning/raw/main/hot100.csv)
 
 ## How to Use
 1. You can view the data cleaning process by opening `data_cleaning.html` as a webpage.
